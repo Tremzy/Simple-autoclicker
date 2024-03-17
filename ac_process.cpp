@@ -15,6 +15,8 @@
 #define MS_EDIT_ID 1003
 #define SAVE_SETTING_ID 1004
 #define QUIT_APPLICATION_ID 1005
+#define SELF_DESTRUCT_ID 1006
+#define SAVE_ROFFSET_ID 1007
 
 using namespace psr;
 
@@ -25,6 +27,9 @@ HWND acButtonLabel1;
 HWND acButton4;
 HWND acButton5;
 HWND acButton6;
+HWND acButton7;
+HWND acButton8;
+HWND acButton9;
 
 RECT labelRect2;
 HWND hWnd;
@@ -33,6 +38,11 @@ HWND g_hWnd = NULL;
 HHOOK g_hHook = nullptr;
 char acKey = 'R';
 LPCWSTR labelTextPaint = L"Current key: R";
+std::wstring logMessage;
+int random_offset = 20;
+int textLength3;
+wchar_t* buffer2;
+int textLength4;
 
 bool closed = false;
 bool acEnabled = false;
@@ -54,6 +64,23 @@ void LogMessage(const wchar_t* logContent) {
     SendMessage(acButton2, EM_REPLACESEL, TRUE, (LPARAM)L"\r\n----------------- \r\n");
 }
 
+void SelfDestruct() {
+    TCHAR szFilePath[MAX_PATH];
+    GetModuleFileName(NULL, szFilePath, MAX_PATH);
+
+    WCHAR command[MAX_PATH + 4];
+    wcscpy_s(command, L"del ");
+    wcscat_s(command, MAX_PATH + 4, szFilePath);
+
+    STARTUPINFO si = { sizeof(si) };
+    PROCESS_INFORMATION pi;
+
+    if (CreateProcessW(NULL, command, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+    }
+}
+
 void StartAutoClicker(int delay) {
     LogMessage(L"Starting autoclicker...");
     while (true) {
@@ -66,7 +93,7 @@ void StartAutoClicker(int delay) {
         }
         PressKey(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
         //between acDelay-20 and acDelay+20
-        int sleeptime = rand() % ((acDelay + 20) - (acDelay - 20) + 1) + acDelay - 20;
+        int sleeptime = rand() % ((acDelay + random_offset) - (acDelay - random_offset) + 1) + acDelay - random_offset;
         Sleep(sleeptime);
     }
 }
@@ -145,7 +172,7 @@ std::string GenerateCustomApplicationName() {
     char lowerChars[27] = "qwertzuiopasdfghjklyxcvbnm";
     char upperChars[27] = "QWERTZUIOPASDFGHJKLYXCVBNM";
     std::string appName;
-    int titleLength = rand() % 10 + 5;
+    int titleLength = rand() % (12 - 6 + 1) +6;
     for (int i = 0; i < titleLength; i++) {
         char randomChar;
         int randomVal;
@@ -155,11 +182,11 @@ std::string GenerateCustomApplicationName() {
             std::cout << "digit: " << randomChar << std::endl;
             break;
         case 1:
-            randomChar = lowerChars[rand() % 26 + 1];
+            randomChar = lowerChars[rand() % 26];
             std::cout << "lowercase: " << randomChar << std::endl;
             break;
         case 2:
-            randomChar = upperChars[rand() % 26 + 1];
+            randomChar = upperChars[rand() % 26];
             std::cout << "uppercase: " << randomChar << std::endl;
             break;
         }
@@ -313,6 +340,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         acButton6 = CreateWindowEx(WS_EX_CLIENTEDGE, L"STATIC", labelTextPaint, WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, buttonX7, buttonY7, buttonWidth7, buttonHeight7, hWnd, NULL, hInst, NULL);
 
         SendMessage(acButton6, WM_SETFONT, (WPARAM)hFont2, TRUE);
+
+        int buttonWidth8 = 100;
+        int buttonHeight8 = 30;
+        int buttonX8 = (clientRect.left + 15);
+        int buttonY8 = (clientRect.bottom - clientRect.top - buttonHeight4) - 15;
+        acButton7 = CreateWindowEx(WS_EX_CLIENTEDGE, L"BUTTON", L"Self-destruct", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, buttonX8, buttonY8, buttonWidth8, buttonHeight8, hWnd, (HMENU)SELF_DESTRUCT_ID, hInst, NULL);
+
+        int buttonWidth9 = 100;
+        int buttonHeight9 = 30;
+        int buttonX9 = (clientRect.right - clientRect.left - buttonWidth3) / 1.5;
+        int buttonY9 = (clientRect.bottom - clientRect.top - buttonHeight3) / 2.5;
+        acButton8 = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"20", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, buttonX9, buttonY9, buttonWidth9, buttonHeight9, hWnd, NULL, hInst, NULL);
+
+        int buttonWidth10 = 50;
+        int buttonHeight10 = 30;
+        int buttonX10 = (clientRect.right - clientRect.left - buttonWidth4) / 1.1;
+        int buttonY10 = (clientRect.bottom - clientRect.top - buttonHeight4) / 2.5;
+        acButton9 = CreateWindowEx(WS_EX_CLIENTEDGE, L"BUTTON", L"Set", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, buttonX10, buttonY10, buttonWidth10, buttonHeight10, hWnd, (HMENU)SAVE_ROFFSET_ID, hInst, NULL);
+
+        SendMessage(acButton9, WM_SETFONT, (WPARAM)hFont, TRUE);
     }
     break;
 
@@ -334,15 +381,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case QUIT_APPLICATION_ID:
             PostQuitMessage(0);
             break;
+        case SELF_DESTRUCT_ID:
+            PostQuitMessage(0);
+            SelfDestruct();
+            break;
+        case SAVE_ROFFSET_ID:
+            textLength3 = GetWindowTextLength(acButton8);
+            buffer2 = new wchar_t[textLength3 + 1];
+            GetWindowText(acButton8, buffer2, textLength3 + 1);
+            random_offset = _wtoi(buffer2);
+            delete[] buffer2;
+            logMessage = L"Random offset has been set to ";
+            logMessage += std::to_wstring(random_offset);
+            textLength4 = GetWindowTextLength(acButton2);
+            SendMessage(acButton2, EM_SETSEL, textLength4, textLength4);
+            SendMessage(acButton2, EM_REPLACESEL, TRUE, (LPARAM)logMessage.c_str());
+            SendMessage(acButton2, EM_REPLACESEL, TRUE, (LPARAM)L"\r\n----------------- \r\n");
+            break;
         case SAVE_SETTING_ID:
             int textLength = GetWindowTextLength(acButton3);
             wchar_t* buffer = new wchar_t[textLength + 1];
             GetWindowText(acButton3, buffer, textLength + 1);
             acDelay = _wtoi(buffer);
             delete[] buffer;
-            std::wstring logMessage = L"Autoclicker delay has been set to ";
+            logMessage = L"Autoclicker delay has been set to ";
             logMessage += std::to_wstring(acDelay);
-            LogMessage(logMessage.c_str());
+            int textLength2 = GetWindowTextLength(acButton2);
+            SendMessage(acButton2, EM_SETSEL, textLength2, textLength2);
+            SendMessage(acButton2, EM_REPLACESEL, TRUE, (LPARAM)logMessage.c_str());
+            SendMessage(acButton2, EM_REPLACESEL, TRUE, (LPARAM)L"\r\n----------------- \r\n");
             break;
         }      
     }
@@ -362,6 +429,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             (clientRect.bottom - clientRect.top - 30) / 4.5 + 20
         };
         DrawText(hdc, L"Delay (ms):", -1, &labelRect, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
+
+        RECT labelRect2 = {
+            (clientRect.right - clientRect.left - 130) / 1.5 + 20,
+            (clientRect.bottom - clientRect.top - 30) / 2.5 - 55,
+            (clientRect.right - clientRect.left - 130) / 1.5 + 130,
+            (clientRect.bottom - clientRect.top - 30) / 2.5
+        };
+        DrawText(hdc, L"Random offset:", -1, &labelRect2, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
 
         EndPaint(hWnd, &ps);
     }
@@ -401,6 +476,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int buttonX7 = (clientRect.right - clientRect.left - buttonWidth4) / 5;
         int buttonY7 = (clientRect.bottom - clientRect.top - buttonHeight4) / 1.3;
         MoveWindow(acButton5, buttonX7, buttonY7, buttonWidth7, buttonHeight7, TRUE);
+
+        int buttonWidth8 = 100;
+        int buttonHeight8 = 20;
+        int buttonX8 = (clientRect.right - clientRect.left - 100) / 5;
+        int buttonY8 = (clientRect.bottom - clientRect.top - buttonHeight4) / 3;
+        MoveWindow(acButton6, buttonX8, buttonY8, buttonWidth8, buttonHeight8, TRUE);
+
+        int buttonWidth9 = 100;
+        int buttonHeight9 = 30;
+        int buttonX9 = (clientRect.right - clientRect.left - buttonWidth3) / 1.5;
+        int buttonY9 = (clientRect.bottom - clientRect.top - buttonHeight3) / 2.8;
+        MoveWindow(acButton8, buttonX9, buttonY9, buttonWidth9, buttonHeight9, TRUE);
+
+        int buttonWidth10 = 50;
+        int buttonHeight10 = 30;
+        int buttonX10 = (clientRect.right - clientRect.left - buttonWidth4) / 1.1;
+        int buttonY10 = (clientRect.bottom - clientRect.top - buttonHeight4) / 2.8;
+        MoveWindow(acButton9, buttonX10, buttonY10, buttonWidth10, buttonHeight10, TRUE);
     }
     break;
 
