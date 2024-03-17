@@ -33,6 +33,7 @@ HWND acButton9;
 
 RECT labelRect2;
 HWND hWnd;
+HWND g_hWndMain = nullptr;
 
 HWND g_hWnd = NULL;
 HHOOK g_hHook = nullptr;
@@ -131,6 +132,21 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
                     SetWindowText(acButton, L"AC key");
                 }
             }
+            else if (vkCode == VK_INSERT) {
+                if (!closed) {
+                    ShowWindow(hWnd, SW_HIDE);
+                    closed = true;
+                    Sleep(50);
+                }
+                else {
+                    ShowWindow(hWnd, SW_SHOW);
+                    closed = false;
+                    Sleep(50);
+                }
+            }
+            else if (vkCode == VK_END) {
+                PostQuitMessage(0);
+            }
             else {
                 if (waitingForKey) {
                     wchar_t charPressed[2];
@@ -157,6 +173,8 @@ void InstallKeyboardHook()
 {
     g_hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, nullptr, 0);
 }
+
+
 
 void UninstallKeyboardHook()
 {
@@ -274,9 +292,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     std::wstring converter = std::wstring(result.begin(), result.end());
     const wchar_t* appName = converter.c_str();
     wcscpy_s(szTitle, MAX_LOADSTRING, appName);
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+    hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, 400, 500, nullptr, nullptr, hInstance, nullptr);
-
     if (!hWnd)
     {
         return FALSE;
@@ -494,6 +511,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int buttonX10 = (clientRect.right - clientRect.left - buttonWidth4) / 1.1;
         int buttonY10 = (clientRect.bottom - clientRect.top - buttonHeight4) / 2.8;
         MoveWindow(acButton9, buttonX10, buttonY10, buttonWidth10, buttonHeight10, TRUE);
+
+        int buttonWidth11 = 100;
+        int buttonHeight11 = 30;
+        int buttonX11 = (clientRect.left + 15);
+        int buttonY11 = (clientRect.bottom - clientRect.top - buttonHeight4) - 15;
+        MoveWindow(acButton7, buttonX11, buttonY11, buttonWidth11, buttonHeight11, TRUE);
     }
     break;
 
@@ -501,14 +524,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam) {
         case VK_END:
             PostQuitMessage(0);
-            break;
-        case VK_INSERT:
-            if (!closed) {
-                ShowWindow(hWnd, SW_HIDE);
-            }
-            else {
-                ShowWindow(hWnd, SW_SHOW);
-            }
             break;
         }
         break;
