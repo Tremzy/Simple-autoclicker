@@ -1,0 +1,60 @@
+﻿  ac_process.cpp
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\pseudorandom.h(6,17): warning C4311: 'reinterpret_cast': pointer truncation from 'unsigned int *' to 'unsigned int'
+  (compiling source file 'ac_process.cpp')
+  
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\pseudorandom.h(6,17): warning C4302: 'reinterpret_cast': truncation from 'unsigned int *' to 'unsigned int'
+  (compiling source file 'ac_process.cpp')
+  
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\pseudorandom.h(12,17): warning C4311: 'reinterpret_cast': pointer truncation from 'unsigned int *' to 'unsigned int'
+  (compiling source file 'ac_process.cpp')
+  
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\pseudorandom.h(12,17): warning C4302: 'reinterpret_cast': truncation from 'unsigned int *' to 'unsigned int'
+  (compiling source file 'ac_process.cpp')
+  
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\pseudorandom.h(15,16): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'ac_process.cpp')
+  
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(189,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(196,13): warning C4101: 'randomVal': unreferenced local variable
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(277,38): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(282,45): warning C4302: 'type cast': truncation from 'LPWSTR' to 'WORD'
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(335,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(336,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(341,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(342,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(350,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(369,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(370,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(375,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(376,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(443,56): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(443,56): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(444,61): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(444,61): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(445,62): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(445,62): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(446,61): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(446,61): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(451,62): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(451,62): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(452,61): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(452,61): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(453,62): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(453,62): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(454,55): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(454,55): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(481,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(482,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(487,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(488,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(494,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(505,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(506,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(511,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(512,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating code
+  1 of 293 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  ac_process.vcxproj -> C:\Users\Norbi\Desktop\cpp\ac_process\x64\Release\ac_process.exe

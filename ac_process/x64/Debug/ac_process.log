@@ -1,0 +1,4 @@
+﻿  ac_process.cpp
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(136,26): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Norbi\Desktop\cpp\ac_process\ac_process\ac_process.cpp(137,26): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  ac_process.vcxproj -> C:\Users\Norbi\Desktop\cpp\ac_process\x64\Debug\ac_process.exe
